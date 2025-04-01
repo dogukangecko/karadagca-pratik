@@ -132,7 +132,9 @@ Arkaplan Görseli yapay zeka ile oluşturuldu canlı sunucumdaki test sisteminde
 | ECONNREFUSED | MySQL bağlantı sorunu | `DB_HOST`, `DB_USER`, `DB_PASSWORD` kontrol et |
 | Unauthorized | JWT eksik/geçersiz | Giriş yapıldı mı? Token gönderiliyor mu? |
 | Google TTS çalışmıyor | JSON credential eksik | `key.json` doğru yerde mi? |
-
+| Google Login çalışmıyor > client id eksik yada hatalı 
+	1.	https://console.cloud.google.com/apis/credentials
+	2.	OAuth 2.0 Client ID oluştur
 ---
 
 ## 🧠 Notlar

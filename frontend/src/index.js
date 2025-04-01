@@ -11,7 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-toastify/dist/ReactToastify.css';
  
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const googleClientId = "977239285992-7mnu4098ml4p0rjd7ahinbdgap6su3ld.apps.googleusercontent.com";
+const googleClientId = "" //buraya google client id'nizi giriniz.;
 
 root.render(
   <React.StrictMode>
