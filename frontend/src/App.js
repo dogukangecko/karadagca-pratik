@@ -325,7 +325,7 @@ function AppContent({ authLoading, user }) {
     return (
         // ToastContainer buradan kaldırıldı
         <div className={`container py-4`}>
-            <h1 className="text-center mb-4">🇲🇪 Karadağca - Türkçe 🇹🇷 Dil Kartları</h1>
+            <h1 className="text-center mb-4">🇲🇪 Karadağca'yı Keşfet: Sesli Dil Kartları</h1>
 
             {/* === Ayarlar Paneli === */}
             {user && !authLoading && (

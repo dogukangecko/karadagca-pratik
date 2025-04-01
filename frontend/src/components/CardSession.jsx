@@ -164,7 +164,7 @@ function CardSession({
                     {/* Tekrarla butonu burada da var, handleRepeatCategory zor kategoriyi engeller */}
                     <button className="btn btn-sm btn-outline-secondary mt-4" onClick={handleRepeatCategory}> Bu Kategoriyi Tekrarla <i className="bi bi-arrow-repeat"></i> </button>
                     {/* Tamamlanma ekranında da Quiz butonu */}
-                     <button className="btn btn-sm btn-info mt-2" onClick={startCategoryQuiz} disabled={cards.length < 4} title="Quiz Yap"> <i className="bi bi-question-circle-fill me-1"></i> Tekrar Quiz Yap </button>
+                     <button className="btn btn-sm btn-info mt-2" onClick={startCategoryQuiz} disabled={cards.length < 4} title="Quiz Yap"> <i className="bi bi-question-circle-fill me-1"></i> Quiz Yap </button>
                 </div>
              ) : showCategoryQuiz ? (
                  // Quiz Ekranı
