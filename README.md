@@ -119,36 +119,96 @@ node records/generate_audio.js
 
 ---
 
+## 🚀 Canlıya Alma (Production Deployment)
+
+### 1. React uygulamasını derle
+
+```bash
+cd frontend
+npm run build
+```
+
+Oluşan `build/` klasörünü sunucudaki uygun web dizinine (örneğin `/www/wwwroot/ucim.prvi.me/`) taşıyın.
 
 ---
 
-## 🧪 Geliştirme Notları
+### 2. Backend servis portunu kontrol et
 
-- Bu proje konsept olarak oluşturulmuştur. Admin paneli bulunmamaktadır. 
-  - Veritabanı işlemleri için DBeaver, MySQL Workbench gibi araçlar kullanılabilir.
-- Şifre sıfırlama özelliği mevcut değildir. Basitlik amacıyla dahil edilmemiştir.
-  - Geliştirmek istersen SMTP ile e-posta gönderimi veya güvenlik sorusu entegre edilebilir.
-- Google ile giriş dışında başka 3rd party login seçenekleri eklenmemiştir.
-  - Geliştirmek istersen GitHub, Facebook gibi sağlayıcılar eklenebilir.
-- Quiz tipi olarak sadece klasik doğru/yanlış tipi eklenmiştir.
-  - Alternatif quiz sistemleri eklenerek zenginleştirilebilir.
-- Arkaplan görseli yapay zeka ile oluşturulmuştur ve sadece local kullanımda görünür.
-  - Canlı sistemde test edilmemiştir.
-  - Görseli değiştirmek veya kaldırmak istersen: `src/pages/LoginPage.jsx` → 47. satır
+Backend Node.js sunucunuz `localhost:5001` gibi bir portta çalışıyor olmalıdır. Örnek:
 
-#### Bonus Not:
-- `public/manifest.json` dosyasını projenize göre düzenlemeniz önerilir. 
-  - Bu dosya PWA (Progressive Web App) olarak yüklenme sırasında tarayıcıda görülecek adı, tema rengi ve simgeyi belirler.
-- Favicon değiştirmek için `public/favicon.ico` dosyasını kendi simgenizle değiştirin.
+```bash
+cd backend
+npm install
+node server.js
+# veya pm2 ile:
+pm2 start server.js --name karadagca-backend
+```
 
-#### Yayınlama Notu:
-- Uygulama geliştirici modda (`npm start`) çalışırken güvenlik ve performans açısından sınırlıdır.
-- Gerçek kullanım için:
-  ```bash
-  npm run build
-  npx serve -s build -l 3000
-  ```
-  - Bu komutlar ile üretim (production) modunda sunabilirsiniz.
+---
+
+### 3. NGINX yapılandırması
+
+NGINX ile React frontend’i ve Node.js backend’i birlikte çalıştırmak için şu yapılandırmayı uygulayın:
+
+```nginx
+server {
+    listen 80;
+    server_name ucim.prvi.me;
+
+    root /www/wwwroot/ucim.prvi.me;
+    index index.html;
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:5001/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Connection '';
+    }
+
+    location / {
+        try_files $uri /index.html;
+    }
+}
+```
+
+> Bu yapı sayesinde tarayıcıdan gelen `/api/` istekleri backend'e, diğer tüm istekler React frontend'e yönlendirilir.
+
+---
+
+### 4. React ortam değişkenini ayarla
+
+`frontend/.env.production` dosyası oluşturun ve şu satırı ekleyin:
+
+```env
+REACT_APP_BASE_API_URL=/api
+```
+
+Uygulama içinde API adresi şu şekilde tanımlanmalıdır:
+
+```js
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL || '/api';
+```
+
+---
+
+### 5. NGINX’i test edip yeniden başlat
+
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+---
+
+### 6. Build klasörünü yayına alın
+
+```bash
+sudo cp -r frontend/build/* /www/wwwroot/ucim.prvi.me/
+```
+
+Artık uygulamanız `https://ucim.prvi.me` adresinden düzgün şekilde yayın yapıyor olmalıdır. Frontend, backend ile `/api` üzerinden iletişim kurar.
 
 ---
 
@@ -171,9 +231,6 @@ node records/generate_audio.js
 
 ---
 
-
----
-
 ## 🌐 Yayında
 
 Proje şu anda aşağıdaki adreste aktif olarak yayınlanmaktadır:
@@ -188,3 +245,4 @@ Uygulama demo amaçlı olarak ücretsiz kullanılabilir. Kartlar, sesli quiz öz
 > Yardım veya katkı için GitHub Issues kısmını kullanabilir ya da bana LinkedIn üzerinden ulaşabilirsiniz.
 
 👤 [linkedin.com/in/dogukangecko](https://www.linkedin.com/in/dogukangecko)
+
