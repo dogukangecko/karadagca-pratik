@@ -53,11 +53,12 @@ cd karadagca-pratik
 ```env
 PORT=5000
 DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=seninsifren
-DB_NAME=karadagca_db
-JWT_SECRET=supersecretkey
-GOOGLE_APPLICATION_CREDENTIALS=./google-credentials.json
+DB_USER=db_kullanıcıadın
+DB_PASSWORD=db_sifren
+DB_NAME=db_ismin
+JWT_SECRET=#burayı oluşturup güncelle
+GOOGLE_CLIENT_ID=#oauth2.0 id'niz server ip portuna izin veren
+LOG_LEVEL=debug
 ```
 
 > `google-credentials.json` dosyasını Google Cloud Console üzerinden indirip `backend` klasörüne yerleştir.

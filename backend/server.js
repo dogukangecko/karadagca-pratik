@@ -8,6 +8,57 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+const originalConsole = {
+    log: console.log,
+    info: console.info,
+    warn: console.warn,
+    error: console.error,
+    debug: console.debug || console.log // console.debug yoksa log'a fallback
+};
+
+const levels = {
+    error: 0,
+    warn: 1,
+    info: 2,
+    debug: 3
+};
+
+const rawLevel = process.env.LOG_LEVEL || 'info'; // Varsayılan 'info'
+const currentLevelNum = levels[rawLevel.toLowerCase()] !== undefined
+                          ? levels[rawLevel.toLowerCase()]
+                          : levels.info;
+
+// console fonksiyonlarını override et
+console.error = (...args) => {
+    // error her zaman gösterilir (seviye >= 0)
+    originalConsole.error.apply(console, args);
+};
+
+console.warn = (...args) => {
+    if (currentLevelNum >= levels.warn) { // Seviye en az 'warn' (1) ise göster
+        originalConsole.warn.apply(console, args);
+    }
+};
+
+// console.info ve console.log'u aynı seviyede kabul edelim ('info')
+console.info = (...args) => {
+    if (currentLevelNum >= levels.info) { // Seviye en az 'info' (2) ise göster
+        originalConsole.info.apply(console, args);
+    }
+};
+
+console.log = (...args) => {
+    if (currentLevelNum >= levels.info) { // Seviye en az 'info' (2) ise göster
+        originalConsole.log.apply(console, args);
+    }
+};
+
+console.debug = (...args) => {
+    if (currentLevelNum >= levels.debug) { // Seviye en az 'debug' (3) ise göster
+        originalConsole.debug.apply(console, args);
+    }
+};
+
 app.use(cors()); // Geliştirme için şimdilik hepsi açık
 app.use(express.json()); // JSON body parser
 console.log("Statik dosya yolu ayarlanıyor:", path.join(__dirname, '../frontend/public/audio')); // Yolu kontrol etmek için log
