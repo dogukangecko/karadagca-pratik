@@ -118,13 +118,36 @@ node records/generate_audio.js
 
 ---
 
+
+---
+
 ## 🧪 Geliştirme Notları
 
-- Admin paneli bulunmamaktadır. Veritabanı işlemleri için DBeaver, MySQL Workbench vb. kullanılabilir.
-- Şifre sıfırlama özelliği yoktur. Basitlik amaçlanmıştır.
-- Giriş sadece Google ile yapılabilmektedir. Diğer 3rd party login seçenekleri eklenebilir.
-- Arkaplan görseli yapay zeka ile üretilmiştir. Kaldırmak veya değiştirmek için:
-  - `src/pages/LoginPage.jsx` → 47. satır
+- Bu proje konsept olarak oluşturulmuştur. Admin paneli bulunmamaktadır. 
+  - Veritabanı işlemleri için DBeaver, MySQL Workbench gibi araçlar kullanılabilir.
+- Şifre sıfırlama özelliği mevcut değildir. Basitlik amacıyla dahil edilmemiştir.
+  - Geliştirmek istersen SMTP ile e-posta gönderimi veya güvenlik sorusu entegre edilebilir.
+- Google ile giriş dışında başka 3rd party login seçenekleri eklenmemiştir.
+  - Geliştirmek istersen GitHub, Facebook gibi sağlayıcılar eklenebilir.
+- Quiz tipi olarak sadece klasik doğru/yanlış tipi eklenmiştir.
+  - Alternatif quiz sistemleri eklenerek zenginleştirilebilir.
+- Arkaplan görseli yapay zeka ile oluşturulmuştur ve sadece local kullanımda görünür.
+  - Canlı sistemde test edilmemiştir.
+  - Görseli değiştirmek veya kaldırmak istersen: `src/pages/LoginPage.jsx` → 47. satır
+
+#### Bonus Not:
+- `public/manifest.json` dosyasını projenize göre düzenlemeniz önerilir. 
+  - Bu dosya PWA (Progressive Web App) olarak yüklenme sırasında tarayıcıda görülecek adı, tema rengi ve simgeyi belirler.
+- Favicon değiştirmek için `public/favicon.ico` dosyasını kendi simgenizle değiştirin.
+
+#### Yayınlama Notu:
+- Uygulama geliştirici modda (`npm start`) çalışırken güvenlik ve performans açısından sınırlıdır.
+- Gerçek kullanım için:
+  ```bash
+  npm run build
+  npx serve -s build -l 3000
+  ```
+  - Bu komutlar ile üretim (production) modunda sunabilirsiniz.
 
 ---
 
