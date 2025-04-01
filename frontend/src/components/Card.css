@@ -1,0 +1,152 @@
+/* src/components/Card.css */
+/* Form alanları */
+body.bg-dark .form-control {
+  background-color: #2b2b2b;
+  color: #f1f1f1;
+  border-color: #555;
+}
+
+/* Seçim kutusu (select) */
+body.bg-dark select.form-select {
+  background-color: #2b2b2b;
+  color: #f1f1f1;
+  border-color: #555;
+}
+
+/* Outline butonlar */
+body.bg-dark .btn-outline-primary {
+  color: #cce5ff;
+  border-color: #80bdff;
+}
+
+body.bg-dark .btn-outline-secondary {
+  color: #ddd;
+  border-color: #999;
+}
+
+body.bg-dark .btn-outline-success {
+  color: #b4f0c1;
+  border-color: #28a745;
+}
+
+body.bg-dark .btn-outline-danger {
+  color: #f5b5b5;
+  border-color: #dc3545;
+}
+
+/* Quiz kartı arka planı */
+body.bg-dark .card.bg-light {
+  background-color: #1e1e1e !important;
+  color: #f1f1f1;
+}
+
+/* Kategori kartı varsayılanı */
+body.bg-dark .card {
+  background-color: #2b2b2b;
+  color: #f8f9fa;
+  border-color: #444;
+}
+
+/* Progress bar arka plan ve iç bar */
+body.bg-dark .progress {
+  background-color: #333;
+}
+
+body.bg-dark .progress-bar {
+  background-color: #0d6efd;
+}
+.card-flip-container {
+    perspective: 1000px;
+    width: 100%;
+    height: 100%; /* Parent'ın (col) yüksekliğini almak için */
+  }
+  
+  /* Dönen iç kısım */
+  .card-flip-inner {
+    position: relative;
+    width: 100%;
+    min-height: 220px; /* VEYA 14rem veya istediğiniz bir değer */
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transform-style: preserve-3d;
+   display: flex; /* İçeriğin (ön/arka yüz) tam yüksekliği kaplamasını sağlamak için */
+    flex-direction: column; /* Gerekli değil ama olabilir */
+  }
+  
+  /* Kart döndüğünde iç kısma eklenen class */
+  .card-flip-inner.is-flipped {
+    transform: rotateY(180deg);
+  }
+  
+  /* Ön ve Arka yüz için temel ayarlar */
+  .card-flip-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Padding Bootstrap .card'dan gelecek veya burada ayarlanabilir */
+    padding: 1rem;
+    overflow: hidden; /* İçerik taşmasını engelle */
+    border-radius: inherit; /* .card-flip-inner'dan alır */
+  }
+  
+  /* Ön yüz */
+  .card-flip-front {
+    justify-content: center; /* İçeriği dikey ortala */
+    align-items: center; /* İçeriği yatay ortala */
+    text-align: center;
+  }
+   
+  .card-flip-back {
+    transform: rotateY(180deg);
+    justify-content: space-between; /* Üst içeriği yukarı, butonları aşağı iter */
+    align-items: center; /* Öğeleri yatayda ortalar */
+    text-align: center;
+    /* display: flex; zaten .card-flip-face'den geliyor */
+    /* flex-direction: column; zaten .card-flip-face'den geliyor */
+  }
+  
+/* ** GÜNCELLEME: Arka yüzdeki üst içerik alanı ** */
+.card-flip-back-content {
+    margin-bottom: 1rem; /* Butonlardan biraz ayır */
+    width: 100%; /* Tam genişlik kaplasın */
+    flex-grow: 1; /* Mevcut dikey alanı doldurmaya çalışır */
+    display: flex; /* İçindeki yazıları ortalamak için flex kullan */
+    flex-direction: column;
+    justify-content: center; /* Yazıları dikeyde ortala */
+    align-items: center; /* Yazıları yatayda ortala */
+}
+
+.card-flip-back-actions {
+    width: 100%;
+    margin-top: auto; /* Kendini en alta iter */
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--bs-border-color-translucent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    min-height: 38px;
+  }
+ 
+  /* Ön yüz metninin boyutunu responsive yapabiliriz */
+  .card-front-text {
+      font-size: clamp(1.5rem, 6vw, 2.5rem); /* Min 1.5rem, Max 2.5rem, ekran genişliğine göre ayarla */
+      font-weight: 500;
+      line-height: 1.2;
+      word-break: break-word;
+      user-select: none;
+      padding: 0.5rem; /* İçerik kenarlara yapışmasın */
+  }
+  
+  .card-flip-back-content .fs-5 { /* Bootstrap fs-5 */
+      font-size: clamp(1.1rem, 5vw, 1.5rem) !important; /* Daha kontrollü boyut */
+       line-height: 1.3;
+       word-break: break-word;
+  }
