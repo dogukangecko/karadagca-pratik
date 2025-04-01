@@ -22,7 +22,21 @@ const levels = {
     info: 2,
     debug: 3
 };
+// Port kullanım kontrolü ve kill işlemi
+const { execSync } = require("child_process");
+// PORT kontrolü ve kill işlemi
+try {
+  const result = execSync(`lsof -ti tcp:${PORT}`).toString().trim();
+  if (result) {
+    console.log(`⚠️ Port ${PORT} kullanılıyor. PID ${result} kapatılıyor...`);
+    execSync(`kill -9 ${result}`);
+    console.log(`✅ Port ${PORT} boşaltıldı.`);
+  }
+} catch (err) {
+  // Port boşsa hata oluşur ama bu normaldir, geçiyoruz.
+}
 
+  //
 const rawLevel = process.env.LOG_LEVEL || 'info'; // Varsayılan 'info'
 const currentLevelNum = levels[rawLevel.toLowerCase()] !== undefined
                           ? levels[rawLevel.toLowerCase()]
