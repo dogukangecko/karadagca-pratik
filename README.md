@@ -1,6 +1,6 @@
 # 🇲🇪 Karadağca Pratik AI
 
-Node.js ve React tabanlı yapay zeka aracılığı ile içindeki tüm kartlar ve ses kayıtları oluşturuldu. Basit bir Karadağca - Türkçe dil kartları uygulaması örneğidir.
+Node.js ve React tabanlı, yapay zeka destekli Karadağca - Türkçe dil kartları uygulamasıdır. Tüm kartlar ve ses kayıtları otomatik olarak oluşturulmuştur. Basit ama geliştirilebilir bir dil öğrenme platformudur.
 
 ---
 
@@ -11,26 +11,22 @@ karadagca-pratik/
 ├── backend/                # Node.js backend
 │   ├── config/             # Veritabanı ve yapılandırma dosyaları
 │   ├── middleware/         # JWT, hata yönetimi vb.
-│   ├── records/            # generate_audio.js ile ses dosyalarını üretir
-│   │                       # Kartlardaki metinleri Google Cloud Text-to-Speech ile MP3'e çevirir
-│   │                       # Elde edilen ses dosyalarını kaydeder ve yolunu veritabanına yazar
+│   ├── records/            # Google TTS ile ses üretimi (generate_audio.js)
 │   ├── routes/             # API endpoint'leri
-│   ├── scripts/            # Yükleme/güncelleme scriptleri
+│   ├── scripts/            # Yardımcı scriptler
 │   ├── server.js           # Uygulama başlangıç noktası
-│   └── package.json        # "npm install" komutunda yüklenecek gereksinimler
+│   └── package.json        # Bağımlılıklar
 │
 ├── frontend/               # React frontend
 │   ├── public/
 │   ├── src/
-│   │   ├── components/  # İçinde kart , kategori , quiz ve istastiklerin yapısı yer almaktadır
-│   │   ├── context/     # Oturum doğrulama 
-│   │   │ 
-│   │   │             
-│   │   ├── pages/      # Giriş ve Kayıt sayfaları burada yer alıyor.
-│   │   ├── utils/      # Burada da backend projenizin yolunu belirtiyorsunuz. Tüm api isteklerini buradaki belirlediğiniz adrese gönderiyor.
-│   │   ├── App.js      # inceleyiniz 
-│   │   └── index.js    # inceleyiniz
-│   └── package.json    # "npm install" komutunda yüklenecek gereksinimler
+│   │   ├── components/     # Kart, kategori, quiz ve istatistik bileşenleri
+│   │   ├── context/        # Oturum yönetimi (auth context)
+│   │   ├── pages/          # Giriş ve kayıt sayfaları
+│   │   ├── utils/          # API adresleri ve yardımcı fonksiyonlar
+│   │   ├── App.js
+│   │   └── index.js
+│   └── package.json
 ```
 
 ---
@@ -46,22 +42,20 @@ cd karadagca-pratik
 
 ### 2. Ortam Değişkenlerini Ayarla
 
-#### 📦 `backend/.env` 
-
-> dosyasını oluştur içini kendi bilgilerinle düzenle
+#### 📦 `backend/.env` dosyası (örnek içerik):
 
 ```env
 PORT=5000
 DB_HOST=localhost
-DB_USER=db_kullanıcıadın
-DB_PASSWORD=db_sifren
-DB_NAME=db_ismin
-JWT_SECRET=#burayı oluşturup güncelle
-GOOGLE_CLIENT_ID=#oauth2.0 id'niz server ip portuna izin veren
+DB_USER=veritabani_kullanici
+DB_PASSWORD=veritabani_sifre
+DB_NAME=veritabani_adi
+JWT_SECRET=sizin_jwt_secretiniz
+GOOGLE_CLIENT_ID=google_oauth_id
 LOG_LEVEL=debug
 ```
 
-> `google-credentials.json` dosyasını Google Cloud Console üzerinden indirip `backend` klasörüne yerleştir.
+> Google Cloud üzerinden `google-credentials.json` dosyasını indirip `backend/records/key.json` olarak yerleştirin.
 
 ---
 
@@ -75,78 +69,98 @@ npm install
 npm run dev
 ```
 
-> Sunucu `http://localhost:5000` adresinde çalışmaya başlar.
+> Sunucu `http://localhost:5000` adresinde çalışır.
 
 ### 🌐 Frontend (React)
-public/manifest.json dosyasını kendi projenize göre düzenleyin , Progressive Web App olarak yüklendiğinde buradaki veriyi kullanır. Ayrıca Favicon değiştirmek isterseniz public klasöründe yer alıyor.
-karadagca-pratik kök klasöründeyken asagıdaki komutlarla terminalde çalıştırabilirsiniz 
+
 ```bash
-cd frontend
+cd ../frontend
 npm install
 npm start
 ```
 
-> React app varsayılan olarak `http://localhost:3000` adresinde çalışır.
+> Varsayılan olarak React `http://localhost:3000` adresinde çalışır.
 
-bu geliştirici özellikleri açık şekilde çalıştıracaktır.
-
-yazılımı paketlemek isterseniz frontend klasörü içinde terminaliniz açık iken "npm build" komutu ile derleyip ardından "npx serve -s build -l 3000" komutuyla sunucuyu başlatabilirsiniz. Gerçek kullanıma aktif etmek istiyorsanız geliştirici modunda bırakmamanız önerilir hem güvenlik açısından hem daha yavaş çalışacaktır.
----
-
-## ⚙️ Özellikler
-
-- Karadağca-Türkçe dil kartları
-- Sesli quiz modu (doğru/yanlış geri bildirimli)
-- Google TTS ile otomatik ses üretimi
-- JWT ile kullanıcı oturumu
-- Quiz sonuçlarını ve ilerleme kaydını görebilme
-- Modern Bootstrap UI
----
-
-## 🔉 Ses Üretimi (`generate_audio.js`)
-
-- `backend/records/generate_audio.js` dosyası çalıştırıldığında:
-  - Veritabanındaki kartlardaki metinleri Google Text-to-Speech API ile seslendirir.
-  - MP3 dosyalarını `records/` içine kaydeder.
-  - Dosya yollarını ilgili kart kayıtlarına yazar.
-  - aynı klasör içine "key.json" dosyanızı google'dan aldığınız eklemeniz gerekmektedir.
+#### Ek Bilgi:
+- `public/manifest.json`: Progressive Web App ayarları.
+- `public/favicon.ico`: Simge değiştirme dosyası.
+- Prod ortama almak için:
 
 ```bash
-node records/generate_audio.js
+npm run build
+npx serve -s build -l 3000
 ```
 
 ---
 
-## 🧪 Geliştirme
+## ⚙️ Uygulama Özellikleri
 
-Projenin bir admin paneli yok verileri görme, düzenleme ve silmek için istenirse yapılabilir. Localde çalışıyorsanız Dbeaver , yada herhangi bir mysql workbench gibi programlarla kontrol edebilirsiniz.
-Konsept projesi olduğu için Şifre sıfırlama kısmı yapılmadı basit tutuldu. İşin içine smtp dahil edip mail gönderme yada gizli soru gibi eklemeler gerekecekti. 
-3rd Party Login seçenekleri arttırılabilir suan sadece Google mevcut.
-Quiz tipleri eklenip çeşitlilik katılabilir karmaşıklaşmaması adına eklenmedi.
-Arkaplan Görseli yapay zeka ile oluşturuldu canlı sunucumdaki test sisteminde kullanılmadı localde sizde gözükecektir değiştirmek yada kaldırmak isterseniz src/pages/LoginPage.jsx içinde 47.satırda yer alıyor. 
+- Karadağca-Türkçe kartlar
+- Sesli quiz sistemi (doğru/yanlış geri bildirimli)
+- Google TTS ile ses üretimi
+- JWT tabanlı kullanıcı oturumu
+- Bootstrap UI
+- Quiz sonuç takibi ve istatistikler
+- PWA desteği
+
 ---
 
-## ❗️ Olası Hatalar
+## 🔉 Ses Üretimi – `generate_audio.js`
 
-| Hata | Sebep | Çözüm |
-|------|-------|-------|
-| ECONNREFUSED | MySQL bağlantı sorunu | `DB_HOST`, `DB_USER`, `DB_PASSWORD` kontrol et |
-| Unauthorized | JWT eksik/geçersiz | Giriş yapıldı mı? Token gönderiliyor mu? |
-| Google TTS çalışmıyor | JSON credential eksik | `key.json` doğru yerde mi? |
-| Google Login çalışmıyor > client id eksik yada hatalı 
-	1.	https://console.cloud.google.com/apis/credentials
-	2.	OAuth 2.0 Client ID oluştur
+```bash
+cd backend
+node records/generate_audio.js
+```
+
+- Veritabanındaki tüm kartlar için Google TTS ile MP3 oluşturur.
+- `records/` klasörüne kaydeder ve kart verisine dosya yolunu yazar.
+- `key.json` dosyanız aynı klasörde olmalıdır.
+
 ---
 
-## 🧠 Notlar
+## 🧪 Geliştirme Notları
 
-- `frontend/src/context/` klasörü global state yönetimi içerir (ör: auth context)
-- `frontend/src/utils/` altında API işlemleri, yardımcı fonksiyonlar yer alır
-- `react-bootstrap`, `react-toastify`, `react-router-dom`, `axios` gibi modern paketler kullanılmıştır
-- db.sql dosyasında create table ve insert sorguları yer almaktadır projenizin çalışması için en azından create table sorgularını oluşturdugunuzdan emin olunuz. Insert sorgularını kullanmak istemezseniz aynı mantıkla kendiniz kartlar oluşturup insert edebilirsiniz 
+- Admin paneli bulunmamaktadır. Veritabanı işlemleri için DBeaver, MySQL Workbench vb. kullanılabilir.
+- Şifre sıfırlama özelliği yoktur. Basitlik amaçlanmıştır.
+- Giriş sadece Google ile yapılabilmektedir. Diğer 3rd party login seçenekleri eklenebilir.
+- Arkaplan görseli yapay zeka ile üretilmiştir. Kaldırmak veya değiştirmek için:
+  - `src/pages/LoginPage.jsx` → 47. satır
+
 ---
+
+## ❗️ Olası Hatalar ve Çözümler
+
+| Hata | Açıklama | Çözüm |
+|------|----------|--------|
+| `ECONNREFUSED` | MySQL bağlantısı kurulamadı | `.env` içindeki veritabanı bilgilerini kontrol et |
+| `Unauthorized` | JWT geçersiz veya eksik | Giriş yapıldı mı? Token düzgün gönderiliyor mu? |
+| Google TTS çalışmıyor | Credential eksik | `key.json` dosyası doğru yerde mi? |
+| Google Login çalışmıyor | Client ID eksik | Google Console’dan yeni OAuth 2.0 client ID oluşturun |
+
+---
+
+## 📌 Notlar
+
+- `frontend/src/context/` → Global oturum yönetimi
+- `frontend/src/utils/` → API adresleri ve servisler
+- `db.sql` içinde tablo oluşturma (`CREATE TABLE`) ve örnek veri (`INSERT`) sorguları yer alır. Çalışma için en azından tablo yapılarının eklenmiş olması gerekir.
+
+---
+
+
+---
+
+## 🌐 Yayında
+
+Proje şu anda aşağıdaki adreste aktif olarak yayınlanmaktadır:
+
+🔗 [https://ucim.prvi.me/](https://ucim.prvi.me/)
+
+Uygulama demo amaçlı olarak ücretsiz kullanılabilir. Kartlar, sesli quiz özelliği ve Google ile giriş sistemi test edilebilir durumdadır.
+
 
 ## 📬 İletişim
 
-Herhangi bir sorun ya da katkı için GitHub Issues kısmını kullanabilirsiniz.
-Linkedin üzerinden de ulaşabilirsiniz. https://www.linkedin.com/in/dogukangecko
+> Yardım veya katkı için GitHub Issues kısmını kullanabilir ya da bana LinkedIn üzerinden ulaşabilirsiniz.
+
+👤 [linkedin.com/in/dogukangecko](https://www.linkedin.com/in/dogukangecko)
