@@ -55,7 +55,7 @@ GOOGLE_CLIENT_ID=google_oauth_id
 LOG_LEVEL=debug
 ```
 
-> Google Cloud üzerinden `google-credentials.json` dosyasını indirip `backend/records/key.json` olarak yerleştirin.
+> [Google Cloud API](https://console.cloud.google.com/auth/clients/create) buradan kendi OAuth 2.0 client ID'nizi yaratınız.
 
 ---
 
@@ -112,6 +112,7 @@ cd backend
 node records/generate_audio.js
 ```
 
+-  Şuanki verilere yeni veri eklemeyecekseniz bu adımı atlayınız.
 - Veritabanındaki tüm kartlar için Google TTS ile MP3 oluşturur.
 - `records/` klasörüne kaydeder ve kart verisine dosya yolunu yazar.
 - `key.json` dosyanız aynı klasörde olmalıdır.
