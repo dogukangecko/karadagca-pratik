@@ -20,7 +20,7 @@ If you find a vulnerability in this project, **please report it responsibly**.
 
 ### 🔐 How to Report
 
-- 📧 Email: `legal@geckotech.me` *(ya da kendi adresin)*
+- 📧 Email: `legal@geckotech.me` 
 - 🐛 You can also create a **Private GitHub Security Advisory** if applicable
 - 🚫 Please do **not** disclose vulnerabilities publicly before we have addressed them
 
